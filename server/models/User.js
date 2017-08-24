@@ -9,4 +9,4 @@ const userSchema = new Schema({
 
 //Hey mongoose! We want to create a new Collection called 'users'
 //with the userSchema (data that all user will have)
-mongoose.model('User', userSchema);
+mongoose.model('users', userSchema);
