@@ -30,28 +30,21 @@ passport.use(
       clientSecret: keys.googleClientSecret,
       callbackURL: '/auth/google/callback',
       scope: ['profile', 'email'],
+      proxy: true
     },
-    (accessToken, refreshToken, profile, done) => {
-      //Using promise in a "select"
-      //because is an asynchronous query
+    async (accessToken, refreshToken, profile, done) => {
+      //Using promise in a "select" because is an asynchronous query
 
-      User.findOne({
-        googleId: profile.id,
-      }).then(existingUser => {
-        if (existingUser) {
-          //Ya esta registrado
-          done(null, existingUser);
-        } else {
-          new User({
-            googleId: profile.id,
-          })
-            .save()
-            .then(user => done(null, user));
-          //"user" es el usuario ya insertado
-          //(a diferencia de new User que es el objeto
-          //antes de ser insertado
-        }
-      });
+      const existingUser = await User.findOne({ googleId: profile.id });
+
+      if (existingUser) {
+        done(null, existingUser);
+      }
+
+      const user = await new User({ googleId: profile.id }).save();
+      //"user" es el usuario ya insertado (a diferencia de new User que es el objeto antes de ser insertado
+      done(null, user);
+
     }
   )
 );

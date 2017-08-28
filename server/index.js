@@ -41,5 +41,5 @@ require('./routes/authRoutes')(app);
 
 
 //Use process.env.PORT . If it is not defined, use 5000
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 app.listen(PORT);
