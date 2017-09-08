@@ -1,8 +1,7 @@
 const passport = require('passport');
 
 module.exports = app => {
-  //No hace falta setear el string 'google',
-  //por defecto googleStrategy lo tiene asignado
+  //No hace falta setear el string 'google', por defecto googleStrategy lo tiene asignado
   app.get(
     '/auth/google',
     passport.authenticate(
@@ -13,13 +12,19 @@ module.exports = app => {
     )
   );
 
-  app.get('/auth/google/callback', passport.authenticate('google'));
+  app.get(
+      '/auth/google/callback',
+      passport.authenticate('google'),
+      (req, res) => {
+        res.redirect('/surveys');
+      }
+  );
 
   //always first parameter is the route,
   //second parameter what it's going to be executed
   app.get('/api/logout', (req, res) => {
     req.logout();
-    res.send(req.user); //It has to be nothing right now
+    res.redirect('/');
   });
 
   //An URL to test if authentication works

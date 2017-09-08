@@ -38,8 +38,9 @@ app.use(passport.session());
     Directamente en una linea podemos hacer:
  */
 require('./routes/authRoutes')(app);
+require('./routes/billingRoutes')(app);
 
 
 //Use process.env.PORT . If it is not defined, use 5000
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT);
