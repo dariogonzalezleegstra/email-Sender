@@ -4,8 +4,9 @@ const { Schema } = mongoose;
 
 //Every user will have:
 const userSchema = new Schema({
-    googleId: String
-})
+    googleId: String,
+    credits: { type: Number, default: 0 }
+});
 
 //Hey mongoose! We want to create a new Collection called 'users'
 //with the userSchema (data that all user will have)

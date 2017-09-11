@@ -4,8 +4,9 @@ const mongoose = require('mongoose');
 //which do the same but in a completely different way!
 const cookieSession = require('cookie-session');
 const passport = require('passport');
-const keys = require('./config/keys');
+const bodyParser = require('body-parser');
 
+const keys = require('./config/keys');
 //Es solo require porque no ejecutamos nada del archivo
 //Es muy importante que se require User antes que passport
 require('./models/User');
@@ -15,6 +16,7 @@ mongoose.connect(keys.mongoURI);
 
 const app = express();
 
+app.use(bodyParser.json());
 
 //maxAge: How long will the cookie live in the browser?
 //30 days 24hs 60 minutes 60 seconds 1000 miliseconds
