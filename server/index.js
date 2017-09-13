@@ -10,6 +10,7 @@ const keys = require('./config/keys');
 //Es solo require porque no ejecutamos nada del archivo
 //Es muy importante que se require User antes que passport
 require('./models/User');
+require('./models/Survey');
 require('./services/passport.js');
 
 mongoose.connect(keys.mongoURI);
@@ -41,6 +42,7 @@ app.use(passport.session());
  */
 require('./routes/authRoutes')(app);
 require('./routes/billingRoutes')(app);
+require('./routes/surveyRoutes')(app);
 
 
 //Use process.env.PORT . If it is not defined, use 5000

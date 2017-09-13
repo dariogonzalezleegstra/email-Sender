@@ -9,6 +9,7 @@ const requireLogin = require('../middlewares/requireLogin');
 module.exports = app => {
     app.post('/api/stripe', requireLogin, async (req, res) => {
 
+        //El siguiente codigo le cobra a la tarjeta
         const charge = await stripe.charges.create({
             amount: 500,
             currency: 'usd',
@@ -16,6 +17,7 @@ module.exports = app => {
             source: req.body.id
         });
 
+        //El siguiente codigo guarda en mongo
         req.user.credits += 5;
         const user = await req.user.save();
 
