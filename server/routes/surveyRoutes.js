@@ -8,21 +8,31 @@ const Survey = mongoose.model('surveys');
 
 
 module.exports = app => {
-    app.post('/surveys', requireLogin, requireCredits, (req, res) => {
-        const { title, subject, body, recipients } = req.body;
+    app.post('/surveys', requireLogin, requireCredits, async (req, res) => {
+        const {title, subject, body, recipients} = req.body;
 
-        const survey = new Survey ({
+        const survey = new Survey({
             title,
             subject,
             body,
-            recipients: recipients.split(',').map(email => ({ email: email.trim() })),
+            recipients: recipients.split(',').map(email => ({email: email.trim()})),
             _user: req.user.id, //id is available in every mongoose model
             dateSent: Date.now()
         });
 
-        //Send an email
-        const mailer = new Mailer(survey, surveyTemplate(survey));
-        mailer.send();
+        try {
+            //Send an email
+            const mailer = new Mailer(survey, surveyTemplate(survey));
+            await mailer.send();
+            await survey.save();
+            req.user.credits -= 1;
+            await req.user.save();
+
+            res.send(user);
+        } catch (err) {
+            res.status(422).send(err);
+        }
+
 
     });
 };
